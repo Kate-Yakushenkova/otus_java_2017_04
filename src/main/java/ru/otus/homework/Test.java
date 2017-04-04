@@ -1,4 +1,4 @@
-package ru.otus.java_homework;
+package ru.otus.homework;
 
 public class Test {
 
