@@ -25,7 +25,7 @@
                             <mainClass>ru.otus.java_homework.Test</mainClass>
                         </manifest>
                     </archive>
-                    <finalName>${project.name}_${java.version}_${os.name}</finalName>
+                    <finalName>${project.name}</finalName>
                     <appendAssemblyId>false</appendAssemblyId>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
