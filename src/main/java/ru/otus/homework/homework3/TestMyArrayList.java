@@ -41,12 +41,7 @@ public class TestMyArrayList {
 
     private static void sort(MyArrayList<Integer> myList) {
         System.out.println("Сортировка списка");
-        Collections.sort(myList, new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                return -o1.compareTo(o2);
-            }
-        });
+        Collections.sort(myList, (o1, o2) -> -o1.compareTo(o2));
         printList(myList);
     }
 

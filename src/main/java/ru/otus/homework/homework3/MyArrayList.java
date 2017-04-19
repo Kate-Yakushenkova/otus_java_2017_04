@@ -185,9 +185,7 @@ public class MyArrayList<T> implements List<T>, Iterable<T> {
             throw new IndexOutOfBoundsException();
         }
         Object removed = array[index];
-        for (int i = index; i < size - 1; i++) {
-            array[i] = array[i + 1];
-        }
+        System.arraycopy(array, index + 1, array, index, size - 1 - index);
         size--;
         return (T) removed;
     }
