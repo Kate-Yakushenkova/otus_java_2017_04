@@ -1,7 +1,6 @@
 package ru.otus.homework.homework3;
 
 import java.util.Collections;
-import java.util.Comparator;
 
 public class TestMyArrayList {
 
