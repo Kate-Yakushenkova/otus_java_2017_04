@@ -27,7 +27,7 @@ public class Benchmark implements BenchmarkMBean {
     public void run() throws IOException, InterruptedException {
         Map<String, GCProperties> gc = new HashMap<>();
         List<String> list = new LinkedList<>();
-        int i = 0;
+
         while (true) {
             for (int j = 0; j < size; j++) {
                 list.add("num" + j);
@@ -35,28 +35,36 @@ public class Benchmark implements BenchmarkMBean {
             for (int j = 0; j < size / 2; j++) {
                 list.remove(0);
             }
-            List<GarbageCollectorMXBean> garbageCollectorMXBeans = ManagementFactory.getGarbageCollectorMXBeans();
-            for (GarbageCollectorMXBean garbageCollector : garbageCollectorMXBeans) {
-                if (gc.containsKey(garbageCollector.getName())) {
-                    GCProperties properties = gc.get(garbageCollector.getName());
-                    properties.setCount(garbageCollector.getCollectionCount());
-                    properties.setTime(garbageCollector.getCollectionTime());
-                    gc.put(garbageCollector.getName(), properties);
-                } else {
-                    gc.put(garbageCollector.getName(), new GCProperties(garbageCollector.getCollectionTime(), garbageCollector.getCollectionCount()));
-                }
-            }
-            PrintWriter out = new PrintWriter(new FileWriter("statistic"));
-            out.println("Количество элементов в списке: " + list.size());
-            for (Map.Entry<String, GCProperties> gcProperties : gc.entrySet()) {
-                out.println("Сборщик мусора: " + gcProperties.getKey());
-                out.println("Общее число сборок: " + gcProperties.getValue().getCount());
-                out.println("Общее время работы: " + gcProperties.getValue().getTime() + " миллисекунд");
-            }
-            out.flush();
-            out.close();
+            putStatisticIntoMap(gc);
+            writeStatistic(gc, list.size());
             Thread.sleep(100);
         }
+    }
+
+    private void putStatisticIntoMap(Map<String, GCProperties> gc) {
+        List<GarbageCollectorMXBean> garbageCollectorMXBeans = ManagementFactory.getGarbageCollectorMXBeans();
+        for (GarbageCollectorMXBean garbageCollector : garbageCollectorMXBeans) {
+            if (gc.containsKey(garbageCollector.getName())) {
+                GCProperties properties = gc.get(garbageCollector.getName());
+                properties.setCount(garbageCollector.getCollectionCount());
+                properties.setTime(garbageCollector.getCollectionTime());
+                gc.put(garbageCollector.getName(), properties);
+            } else {
+                gc.put(garbageCollector.getName(), new GCProperties(garbageCollector.getCollectionTime(), garbageCollector.getCollectionCount()));
+            }
+        }
+    }
+
+    private void writeStatistic(Map<String, GCProperties> gc, int size) throws IOException {
+        PrintWriter out = new PrintWriter(new FileWriter("statistic"));
+        out.println("Количество элементов в списке: " + size);
+        for (Map.Entry<String, GCProperties> gcProperties : gc.entrySet()) {
+            out.println("Сборщик мусора: " + gcProperties.getKey());
+            out.println("Общее число сборок: " + gcProperties.getValue().getCount());
+            out.println("Общее время работы: " + gcProperties.getValue().getTime() + " миллисекунд");
+        }
+        out.flush();
+        out.close();
     }
 
     private class GCProperties {

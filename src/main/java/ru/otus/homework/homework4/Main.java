@@ -1,11 +1,8 @@
 package ru.otus.homework.homework4;
 
-import javax.management.*;
-import java.io.IOException;
-import java.lang.management.GarbageCollectorMXBean;
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
 import java.lang.management.ManagementFactory;
-import java.util.LinkedList;
-import java.util.List;
 
 public class Main {
 
