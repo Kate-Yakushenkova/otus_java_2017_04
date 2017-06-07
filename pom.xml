@@ -22,7 +22,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>ru.otus.homework.homework4.Main</mainClass>
+                            <mainClass>ru.otus.homework.homework9.main.Main</mainClass>
                         </manifest>
                     </archive>
                     <finalName>${project.name}</finalName>
@@ -50,6 +50,16 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>6.0.6</version>
         </dependency>
     </dependencies>
 
