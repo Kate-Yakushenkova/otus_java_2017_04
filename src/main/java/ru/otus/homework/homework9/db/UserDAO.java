@@ -2,22 +2,22 @@ package ru.otus.homework.homework9.db;
 
 import ru.otus.homework.homework9.dataSets.User;
 import ru.otus.homework.homework9.exception.DBException;
-import ru.otus.homework.homework9.executors.UserExecutor;
+import ru.otus.homework.homework9.executors.ExecutorImpl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
 public class UserDAO {
 
-    private UserExecutor executor;
+    private ExecutorImpl executor;
 
     public UserDAO(Connection connection) {
-        this.executor = new UserExecutor(connection);
+        this.executor = new ExecutorImpl(connection);
     }
 
     public long addUser(User user) throws DBException {
         try {
-            executor.createTable();
+            executor.createTable(User.class);
             executor.save(user);
             return executor.getId(user);
         } catch (SQLException e) {
@@ -35,7 +35,7 @@ public class UserDAO {
 
     public void clear() throws DBException {
         try {
-            executor.clear();
+            executor.clear(User.class);
         } catch (SQLException e) {
             throw new DBException(e);
         }

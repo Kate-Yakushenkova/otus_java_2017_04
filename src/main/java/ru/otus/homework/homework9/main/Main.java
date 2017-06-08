@@ -7,11 +7,20 @@ import ru.otus.homework.homework9.exception.DBException;
 
 public class Main {
 
+    /**
+     * mysql> CREATE USER 'kate'@'localhost' IDENTIFIED BY 'Pa$$w0rd';
+     * mysql> create database db_kate;
+     * mysql> GRANT ALL PRIVILEGES ON db_kate.* TO 'kate'@'localhost';
+     * mysql> FLUSH PRIVILEGES;
+     */
+    
     public static void main(String[] args) {
         UserDAO userDAO = createUserDAO();
         if (userDAO != null) {
-            Long id = insertUser(userDAO);
+            Long id = insertUser(new User("Tom", 25), userDAO);
             getUser(userDAO, id);
+            Long id2 = insertUser(new User("Jerry", 5), userDAO);
+            getUser(userDAO, id2);
             clear(userDAO);
         }
     }
@@ -20,6 +29,7 @@ public class Main {
         try {
             DBConnection dbConnection = new DBConnection();
             dbConnection.printConnectInfo();
+            System.out.println();
             return new UserDAO(dbConnection.getConnection());
         } catch (DBException e) {
             e.printStackTrace();
@@ -27,11 +37,11 @@ public class Main {
         return null;
     }
 
-    private static Long insertUser(UserDAO userDAO) {
+    private static Long insertUser(User user, UserDAO userDAO) {
         try {
-            User user = new User("Tom", 25);
             long id = userDAO.addUser(user);
             System.out.println("User added with id: " + id);
+            System.out.println();
             return id;
         } catch (DBException e) {
             e.printStackTrace();
@@ -47,6 +57,7 @@ public class Main {
             }
             User savedUser = userDAO.getUser(id);
             System.out.println(id + ": " + savedUser);
+            System.out.println();
         } catch (DBException e) {
             e.printStackTrace();
         }

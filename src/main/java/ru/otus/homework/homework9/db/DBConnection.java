@@ -36,7 +36,7 @@ public class DBConnection {
             StringBuilder url = new StringBuilder();
             url.
                     append("jdbc:mysql://").
-                    append("10.1.1.5:").
+                    append("localhost:").
                     append("3306/").
                     append("db_kate?").
                     append("user=kate&").

@@ -12,8 +12,8 @@ public interface Executor {
 
     <T extends DataSet> long getId(T dataSet) throws SQLException;
 
-    void createTable() throws SQLException;
+    <T extends DataSet> void createTable(Class<T> clazz) throws SQLException;
 
-    void clear() throws SQLException;
+    <T extends DataSet> void clear(Class<T> clazz) throws SQLException;
 
 }
