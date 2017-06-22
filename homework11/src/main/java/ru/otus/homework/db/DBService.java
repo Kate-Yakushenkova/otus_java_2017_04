@@ -33,10 +33,11 @@ public class DBService {
     public User getUser(long id) throws DBException {
         try {
             MyElement<Long, User> element = cacheEngine.get(id);
-            User user;
+            User user = null;
             if (element != null) {
                 user = element.getValue().get();
-            } else {
+            }
+            if (user == null){
                 user = executor.load(id, User.class);
                 cacheEngine.put(new MyElement<>(id, new SoftReference<>(user)));
             }
