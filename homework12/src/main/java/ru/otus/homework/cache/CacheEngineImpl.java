@@ -8,7 +8,7 @@ import java.util.TimerTask;
 public class CacheEngineImpl<K, V> implements CacheEngine<K, V> {
 
     private final int LIFE_TIME_MS = 1000;
-    private final int ACCESS_TIME_MS = 1000;
+    private final int ACCESS_TIME_MS = 500;
 
     private int max_size;
 
