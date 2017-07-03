@@ -31,6 +31,10 @@ public class CacheServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (!isAdmin(request)) {
+            response.sendError(403);
+            return;
+        }
         DBService dbService = createUserDAO();
         if (dbService != null) {
             createUsers(NUMBER_USER, dbService);
@@ -49,6 +53,10 @@ public class CacheServlet extends HttpServlet {
 
             clear(dbService);
         }
+    }
+
+    private boolean isAdmin(HttpServletRequest request) {
+        return (request.getSession().getAttribute("admin") != null) && (((Boolean) request.getSession().getAttribute("admin")));
     }
 
     private static void getUsers(int number, DBService dbService) {
