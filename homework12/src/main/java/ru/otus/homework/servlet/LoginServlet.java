@@ -28,6 +28,8 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter(PASSWORD_PARAMETER_NAME);
         if (login.equals("admin") && password.equals("passwd")) {
             response.sendRedirect("/cache");
+        } else {
+            response.sendRedirect("/login");
         }
     }
 
