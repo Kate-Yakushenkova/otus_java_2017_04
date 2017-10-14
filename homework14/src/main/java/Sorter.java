@@ -1,77 +1,55 @@
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.RecursiveTask;
 
-public class Sorter {
+public class Sorter<T extends Comparable<? super T>> {
 
-    private static final int THREAD_NUMBER = 10;
-    private AtomicInteger threadCount;
+    private static final int THREAD_NUMBER = 4;
 
-    public int[] sort(int[] array) {
-        threadCount = new AtomicInteger(1);
-        Helper helper = new Helper(array);
-        return helper.getResult();
+    public T[] sort(T[] array) {
+        ForkJoinPool pool = new ForkJoinPool(THREAD_NUMBER);
+        return pool.invoke(new Helper(array));
     }
 
-    private static int[] merge(int[] array1, int[] array2) {
-        int[] newArray = new int[array1.length + array2.length];
-        int i = 0, j = 0, k = 0;
-        for (; i < array1.length && j < array2.length; ) {
-            if (array1[i] < array2[j]) {
-                newArray[k] = array1[i];
-                i++;
-            } else {
-                newArray[k] = array2[j];
-                j++;
-            }
-            k++;
-        }
-        for (; i < array1.length; i++, k++) {
-            newArray[k] = array1[i];
-        }
-        for (; j < array2.length; j++, k++) {
-            newArray[k] = array2[j];
-        }
-        return newArray;
-    }
+    private class Helper extends RecursiveTask<T[]> {
 
-    private class Helper implements Runnable {
+        T[] array;
 
-        Thread thread;
-        int[] array;
-        int[] result;
-
-        public Helper(int[] array) {
+        public Helper(T[] array) {
             this.array = array;
-            thread = new Thread(this);
-            thread.start();
-        }
-
-        public int[] getResult() {
-            try {
-                thread.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return result;
         }
 
         @Override
-        public void run() {
-            System.out.println(threadCount);
+        protected T[] compute() {
             if (array.length > 1) {
-                int[] left = Arrays.copyOfRange(array, 0, array.length / 2);
-                int[] right = Arrays.copyOfRange(array, array.length / 2, array.length);
-                if (threadCount.addAndGet(2) < THREAD_NUMBER) {
-                    Helper h1 = new Helper(left);
-                    Helper h2 = new Helper(right);
-                    result = merge(h1.getResult(), h2.getResult());
+                T[] left = Arrays.copyOfRange(array, 0, array.length / 2);
+                T[] right = Arrays.copyOfRange(array, array.length / 2, array.length);
+                Helper h1 = new Helper(left);
+                Helper h2 = new Helper(right);
+                h1.fork();
+                h2.fork();
+                merge(h1.join(), h2.join(), array);
+            }
+            return array;
+        }
+
+        private void merge(T[] array1, T[] array2, T[] result) {
+            int i = 0, j = 0, k = 0;
+            for (; i < array1.length && j < array2.length; ) {
+                if (array1[i].compareTo(array2[j]) < 0) {
+                    result[k] = array1[i];
+                    i++;
                 } else {
-                    Arrays.sort(left);
-                    Arrays.sort(right);
-                    result = merge(left, right);
+                    result[k] = array2[j];
+                    j++;
                 }
-            } else {
-                result = array;
+                k++;
+            }
+            for (; i < array1.length; i++, k++) {
+                result[k] = array1[i];
+            }
+            for (; j < array2.length; j++, k++) {
+                result[k] = array2[j];
             }
         }
     }

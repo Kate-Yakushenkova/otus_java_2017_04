@@ -3,32 +3,20 @@ import java.util.Random;
 
 public class Main {
 
-    private static final int N = 1_000_000;
+    private static final int N = 10;
 
     public static void main(String[] args) {
-        int[] array = generateArray(N);
-//        System.out.println(Arrays.toString(array));
+        Integer[] array = new ArrayGenerator().generateArray(N, 100);
 
-        long start = System.currentTimeMillis();
-        Sorter sorter = new Sorter();
-        int[] array2 = null;
-//        for (int i = 0; i < 20; i++) {
-            array2 = sorter.sort(array);
-//        }
-        long end = System.currentTimeMillis();
+        System.out.println("Исходный массив:");
+        System.out.println(Arrays.toString(array));
+        System.out.println();
 
-//        System.out.println(Arrays.toString(array2));
+        Sorter<Integer> sorter = new Sorter<>();
+        array = sorter.sort(array);
 
-        System.out.println(end - start);
-
-    }
-
-    private static int[] generateArray(int n) {
-        int[] array = new int[n];
-        for (int i = 0; i < n; i++) {
-            array[i] = new Random().nextInt(100);
-        }
-        return array;
+        System.out.println("Отсортированный массив:");
+        System.out.println(Arrays.toString(array));
     }
 
 }
