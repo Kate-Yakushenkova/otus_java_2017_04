@@ -3,10 +3,10 @@ import java.util.Random;
 
 public class Main {
 
-    private static final int N = 10;
+    private static final int N = 1000;
 
     public static void main(String[] args) {
-        Integer[] array = new ArrayGenerator().generateArray(N, 100);
+        Integer[] array = new ArrayGenerator().generateArray(N, 1000);
 
         System.out.println("Исходный массив:");
         System.out.println(Arrays.toString(array));
