@@ -1,3 +1,5 @@
+package ru.otus.homework;
+
 import java.util.Random;
 
 public class ArrayGenerator {

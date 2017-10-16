@@ -1,4 +1,6 @@
 import org.testng.annotations.Test;
+import ru.otus.homework.ArrayGenerator;
+import ru.otus.homework.Sorter;
 
 import static org.testng.Assert.assertTrue;
 
