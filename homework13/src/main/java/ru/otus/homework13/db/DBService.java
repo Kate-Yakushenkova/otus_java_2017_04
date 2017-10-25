@@ -26,7 +26,6 @@ public class DBService {
         } catch (DBException e) {
             e.printStackTrace();
         }
-        System.out.println("############################");
     }
 
     public long addUser(User user) throws DBException {

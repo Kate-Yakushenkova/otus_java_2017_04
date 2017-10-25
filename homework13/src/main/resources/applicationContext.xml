@@ -17,10 +17,4 @@
         <constructor-arg name="size" value="10"/>
     </bean>
 
-    <!--<bean id="cacheInfo" class="ru.otus.hw13.cache.StateCacheDecorator">-->
-    <!--<constructor-arg ref="myCache"/>-->
-    <!--</bean>-->
-
-    <!--<bean id="authService" class="ru.otus.hw13.service.AuthorizationService"/>-->
-
 </beans>

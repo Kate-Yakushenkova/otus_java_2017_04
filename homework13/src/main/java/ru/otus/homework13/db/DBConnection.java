@@ -40,8 +40,7 @@ public class DBConnection {
                     append("3306/").
                     append("db_kate?").
                     append("user=kate&").
-                    append("password=112358&").
-                    //append("password=Pa$$w0rd&").
+                    append("password=Pa$$w0rd&").
                     append("useLegacyDatetimeCode=false&").
                     append("amp&").
                     append("serverTimezone=UTC");

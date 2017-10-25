@@ -1,8 +1,8 @@
 package ru.otus.homework13.servlet;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import ru.otus.homework13.cache.CacheEngine;
 import ru.otus.homework13.cache.MyElement;
 import ru.otus.homework13.dataSets.User;
@@ -35,8 +35,7 @@ public class CacheServlet extends HttpServlet {
     private DBService dbService;
 
     public CacheServlet() {
-        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-        System.out.println(dbService);
+        SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
     }
 
     @Override
@@ -45,25 +44,20 @@ public class CacheServlet extends HttpServlet {
             response.sendError(403);
             return;
         }
-        if (dbService != null) {
-            createUsers(NUMBER_USER);
-            getUsers(NUMBER_USER);
+        createUsers(NUMBER_USER);
+        getUsers(NUMBER_USER);
+        getUsers(NUMBER_USER);
 
-            Map<String, Object> parameters = new HashMap<>();
-            List<MyElement<Long, User>> cache = convertCacheEngineToList(dbService.cacheEngine);
-            parameters.put("cache", cache);
-            parameters.put("hits", dbService.cacheEngine.getHitCount());
-            parameters.put("miss", dbService.cacheEngine.getMissCount());
+        Map<String, Object> parameters = new HashMap<>();
+        List<MyElement<Long, User>> cache = convertCacheEngineToList(dbService.cacheEngine);
+        parameters.put("cache", cache);
+        parameters.put("hits", dbService.cacheEngine.getHitCount());
+        parameters.put("miss", dbService.cacheEngine.getMissCount());
 
-            response.getWriter().println(TemplateProcessor.instance().getPage(CACHE_PAGE, parameters));
+        response.setContentType("text/html;charset=utf-8");
+        response.getWriter().println(TemplateProcessor.instance().getPage(CACHE_PAGE, parameters));
 
-            response.setContentType("text/html;charset=utf-8");
-            response.setStatus(HttpServletResponse.SC_OK);
-
-            clear();
-        } else {
-            System.out.println("NULLLLLLLLLLLLLLLLLLLLLLLL");
-        }
+        response.setStatus(HttpServletResponse.SC_OK);
     }
 
     private boolean isAdmin(HttpServletRequest request) {
